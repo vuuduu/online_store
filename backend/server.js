@@ -39,6 +39,8 @@ app.get('/api/allCars', async (_req, res) => {
 
 // get reccomended cars
 app.get('/api/recommended/:userid', (req, res) => {
+    // request the flask backend
+    // retrieval data = list of reccomend car for given users from flask
     res.send('RECC')
 })
 
@@ -55,8 +57,23 @@ app.post('/api/login', async (req, res) => {
 })
 
 // get user purchase history
-app.get('/api/carHistory/:userid', (req, res) => {
-    res.send('History')
+app.get('/api/carHistory/:userid', async (req, res) => {
+    const { userid } = req.params
+
+    try {
+        // connecting to MONGO DB
+        const client = await MongoClient.connect(mongoURL);
+        const db = client.db(mongoDB);
+
+        // get cars data
+        const users = db.collection(userCollections);
+        const userData = await users.findOne({ "user_id": userid });
+
+        res.json(userData)
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Error getting user history");
+    }
 })
 
 // update user purchase history
