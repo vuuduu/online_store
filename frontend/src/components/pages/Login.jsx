@@ -1,16 +1,30 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-
+const LOGIN_URL = 'http://localhost:3000/api/login';
 
 function Login(props) {
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
+        const username = e.target.formLoginUsername.value;
+        const password = e.target.formLoginPassword.value
 
+        try {
+            // send a post request to the server
+            const response = await fetch(LOGIN_URL, {
+                method: "POST",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            });
 
-        console.log(e.target.formLoginUsername.value);
-        console.log(e.target.formLoginPassword.value);
+            console.log(response);
+        } catch (err) {
+            console.error('There was a problem with the login:', err);
+        }
     }
 
 

@@ -55,6 +55,8 @@ app.post('/api/login', async (req, res) => {
         const users = db.collection(userCollections);
         const { username, password } = req.body;
 
+        console.log("TEST: ", username, password);
+
         // find user in db
         const user = await users.findOne({ username: username })
 
