@@ -1,0 +1,90 @@
+[
+    {
+        "user_id": 1,
+        "username": "enthusiast",
+        "password": "enthusiast1234",
+        "name": "Enthusiast",
+        "history": {
+            "cars": [
+                4,
+                6,
+                10,
+                11,
+                13,
+                15,
+                20,
+                24,
+                32,
+                34
+            ],
+            "shipping": [
+                "10 Main St",
+                "11 Main St",
+                "12 Main St",
+                "13 Main St",
+                "14 Main St",
+                "15 Main St",
+                "16 Main St",
+                "17 Main St",
+                "18 Main St",
+                "19 Main St"
+            ],
+            "payment": [
+                "Visa",
+                "MasterCard",
+                "Visa",
+                "MasterCard",
+                "Visa",
+                "MasterCard",
+                "Visa",
+                "MasterCard",
+                "Visa",
+                "MasterCard"
+            ]
+        }
+    },
+    {
+        "user_id": 1,
+        "username": "utility",
+        "password": "utility1234",
+        "name": "Utility",
+        "history": {
+            "cars": [
+                18,
+                26,
+                37,
+                68,
+                76,
+                84,
+                118,
+                125,
+                142,
+                144
+            ],
+            "shipping": [
+                "10 Main St",
+                "11 Main St",
+                "12 Main St",
+                "13 Main St",
+                "14 Main St",
+                "15 Main St",
+                "16 Main St",
+                "17 Main St",
+                "18 Main St",
+                "19 Main St"
+            ],
+            "payment": [
+                "Visa",
+                "MasterCard",
+                "Visa",
+                "MasterCard",
+                "Visa",
+                "MasterCard",
+                "Visa",
+                "MasterCard",
+                "Visa",
+                "MasterCard"
+            ]
+        }
+    }
+]

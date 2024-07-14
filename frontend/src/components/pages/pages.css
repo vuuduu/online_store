@@ -1,0 +1,26 @@
+/* Login in and Register CSS*/
+.form-footer {
+    display: flex;
+}
+
+.form-footer-btn {
+    padding: 0 0 0 10px !important;
+    margin: 0 !important;
+    height: 24px !important;
+}
+
+.login-register-container {
+    width: 40%;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 25px;
+}
+
+/* Auth Container*/
+.auth-container {
+    display: flex;
+    justify-content: center;
+    /* top | left and right | bottom */
+    margin: 8rem auto 0;
+
+}
