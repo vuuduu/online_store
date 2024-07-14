@@ -1,12 +1,23 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+
+
 function Login(props) {
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+
+
+        console.log(e.target.formLoginUsername.value);
+        console.log(e.target.formLoginPassword.value);
+    }
+
 
     return (
         <div className='login-register-container'>
             <h3>Login to Rent-a-Car</h3>
-            <Form>
+            <Form onSubmit={handleLogin}>
                 <Form.Group className="mb-3" controlId="formLoginUsername">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" placeholder="Enter username" />
@@ -17,7 +28,7 @@ function Login(props) {
                     <Form.Control type="password" placeholder="Password" />
                 </Form.Group>
 
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" >
                     Login
                 </Button>
             </Form>

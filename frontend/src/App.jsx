@@ -2,8 +2,6 @@ import './App.css'
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Authentication from './components/pages/Authentication';
-import Login from './components/pages/Login';
-import Register from './components/pages/Register';
 import Home from './components/pages/Home';
 import Product from './components/pages/Product';
 import Checkout from './components/pages/Checkout';
