@@ -1,9 +1,14 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 
 const LOGIN_URL = 'http://localhost:3000/api/login';
 
 function Login(props) {
+    const navigate = useNavigate();
+    const [errorMsg, setErrorMsg] = useState(null);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -16,14 +21,21 @@ function Login(props) {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
-                    username: username,
-                    password: password
+                    username,
+                    password
                 })
             });
-
-            console.log(response);
+            // check if the data is ok
+            if (response.ok) {
+                setErrorMsg(null);
+                const user_data = await response.json();
+                localStorage.setItem('user', JSON.stringify(user_data.user));
+                navigate('/home');
+            } else {
+                setErrorMsg('Failed to Log In');
+            }
         } catch (err) {
-            console.error('There was a problem with the login:', err);
+            console.error('There was a problem with logging in:', err);
         }
     }
 
@@ -50,6 +62,7 @@ function Login(props) {
                 <p>New User?</p>
                 <Button className="form-footer-btn" variant="link" onClick={() => props.handleAuthState("register")}>Register</Button>
             </div>
+            {errorMsg && <Alert variant='danger'>{errorMsg}</Alert>}
         </div>
     )
 }

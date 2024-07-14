@@ -65,11 +65,11 @@ app.post('/api/login', async (req, res) => {
             // User found and password matches
             res.status(200).json({
                 success: true,
-                user_id: user.user_id,
-                name: user.name
+                message: "Logged In Successful!",
+                user
             });
         } else {
-            // User not found or password doesn't match
+            // Send status 401 = unauthorized access
             res.status(401).json({ success: false, message: "Invalid username or password" });
         }
 
@@ -91,13 +91,14 @@ app.post('/api/register', async (req, res) => {
         const users = db.collection(userCollections);
         const { username, password, name } = req.body;
 
-        // check if user exist and send appropriate response
+        // check if user exist and send appropriate response (400 = Bad Request)
         const existingUser = await users.findOne({ username: username })
         if (existingUser) {
+            client.close();
             return res.status(400).json({
                 success: false,
                 message: "Username already exist"
-            })
+            });
         }
 
         // add user in database if not already exist
@@ -115,7 +116,7 @@ app.post('/api/register', async (req, res) => {
         const result = await users.insertOne(newUser);
 
         if (result.acknowledged) {
-            res.status(201).json({ success: true, message: "User registered successfully" });
+            res.status(201).json({ success: true, message: "User registered successfully", user: newUser });
         } else {
             res.status(500).json({ success: false, message: "Failed to register user" });
         }
