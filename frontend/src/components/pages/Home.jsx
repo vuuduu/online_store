@@ -25,10 +25,15 @@ const Home = () => {
         setHomeView(view);
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        navigate('/');
+    }
+
 
     return (
         <div className='home-container'>
-            <ProfileSideBar storedUser={storedUser} handleViewChange={handleViewChange} homeView={homeView} />
+            <ProfileSideBar storedUser={storedUser} handleViewChange={handleViewChange} homeView={homeView} handleLogout={handleLogout} />
 
             <div className="main-content-container">
                 <MainHomeContent handleViewChange={handleViewChange} homeView={homeView} />
