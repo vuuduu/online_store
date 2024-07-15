@@ -45,5 +45,6 @@ body {
 }
 
 .active-view {
-    background-color: #e0e0e0;
+    background-color: #393E46;
+    color: white;
 }

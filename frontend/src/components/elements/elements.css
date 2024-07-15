@@ -22,9 +22,12 @@
 }
 
 .welcome-container {
+    /* background-color: #393E46;
+    color: white; */
     padding: 20px 30px;
     border-radius: 20px;
     font-size: 1.5em;
+    font-weight: bold;
     /* Adjust font size as needed */
 }
 
@@ -42,7 +45,8 @@
 .gallery-container:hover,
 .suggest-container:hover,
 .logout-container:hover {
-    background-color: #f0f0f0;
+    background-color: #393E46;
+    color: white;
 }
 
 .gallery-container,
@@ -100,6 +104,12 @@
     /* Change text color on hover */
     border-bottom: 2px solid #F2E7D5;
     /* Add underline on hover */
+}
+
+.cart-icon {
+    height: 25px;
+    width: 25px;
+
 }
 
 .main-content-products {

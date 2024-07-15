@@ -31,7 +31,7 @@ const Home = () => {
             <ProfileSideBar storedUser={storedUser} handleViewChange={handleViewChange} homeView={homeView} />
 
             <div className="main-content-container">
-                <MainHomeContent homeView={homeView} />
+                <MainHomeContent handleViewChange={handleViewChange} homeView={homeView} />
             </div>
         </div>
     )
