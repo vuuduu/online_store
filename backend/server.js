@@ -1,5 +1,5 @@
 const { MongoClient, ObjectId } = require('mongodb');
-
+const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -16,11 +16,11 @@ const carsCollections = "cars";
 
 // home
 app.get('/', async (req, res) => {
-    res.send('Hello World!')
+    res.send('Node Server is Running')
 })
 
 // get all cars
-app.get('/api/allCars', async (_req, res) => {
+app.get('/api/gallery', async (_req, res) => {
     try {
         // connecting to MONGO DB
         const client = await MongoClient.connect(mongoURL);
@@ -38,10 +38,32 @@ app.get('/api/allCars', async (_req, res) => {
 })
 
 // get reccomended cars
-app.get('/api/recommended/:userid', (req, res) => {
-    // request the flask backend
-    // retrieval data = list of reccomend car for given users from flask
-    res.send('RECC')
+app.get('/api/suggested/:userid', async (req, res) => {
+    const { userid } = req.params
+
+    try {
+        // connecting to MONGO DB
+        const client = await MongoClient.connect(mongoURL);
+        const db = client.db(mongoDB);
+
+        // get user data
+        const users = db.collection(userCollections);
+        const userData = await users.findOne({"user_id": Number(userid)});
+        const userCarHistory = userData.history.cars;
+
+        const flaskUrl = 'http://localhost:5000/predict'
+
+        const response = await axios.post(flaskUrl, {
+            arrayData: userCarHistory
+        });
+
+        const responseData = response.data;
+
+        res.json(responseData);
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Error getting all cars");
+    }
 })
 
 // post user login
@@ -130,7 +152,7 @@ app.post('/api/register', async (req, res) => {
 })
 
 // get user purchase history
-app.get('/api/carHistory/:userid', async (req, res) => {
+app.get('/api/history/:userid', async (req, res) => {
     const { userid } = req.params
 
     try {
@@ -138,11 +160,15 @@ app.get('/api/carHistory/:userid', async (req, res) => {
         const client = await MongoClient.connect(mongoURL);
         const db = client.db(mongoDB);
 
-        // get cars data
+        // get user data
         const users = db.collection(userCollections);
-        const userData = await users.findOne({ "user_id": userid });
+        const userData = await users.findOne({"user_id": Number(userid)});
 
-        res.json(userData)
+        const cars = db.collection(carsCollections);
+
+        const carHistoryList = await cars.find({id: {$in: userData.history.cars}}).toArray();
+        
+        res.json(carHistoryList)
     } catch (err) {
         console.error("Error:", err);
         res.status(500).send("Error getting user history");
@@ -150,8 +176,43 @@ app.get('/api/carHistory/:userid', async (req, res) => {
 })
 
 // update user purchase history
-app.post('/api/checkout/:userid', (req, res) => {
-    res.send('HISTING POST CHECKOUT')
+app.post('/api/checkout/', async (req, res) => {
+    try {
+        // connecting to MONGO DB
+        const client = await MongoClient.connect(mongoURL);
+        const db = client.db(mongoDB);
+
+        // get user data
+        const users = db.collection(userCollections);
+        
+        const { userId, address, payment, cars } = req.body;
+
+        const operations = cars.map(car => ({
+            updateOne: {
+                filter: { user_id: Number(userId) },
+                update: {
+                    $push: {
+                        'history.cars': car,
+                        'history.payment': payment,
+                        'history.shipping': address
+                    }
+                }
+            }
+        }));
+
+        const result = await users.bulkWrite(operations);
+
+        if (result.modifiedCount == cars.length) {
+            res.status(201).json({ success: true, message: "User history updated successfully" });
+        } else {
+            res.status(500).json({ success: false, message: "Failed to update user history" });
+        }
+
+        client.close();
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("Error getting user history");
+    }
 })
 
 // listening
