@@ -101,7 +101,6 @@
 
 .main-content-right div:hover {
     color: #F2E7D5;
-    /* Change text color on hover */
     border-bottom: 2px solid #F2E7D5;
     /* Add underline on hover */
 }
