@@ -10,9 +10,10 @@ import './pages.css';
 const Home = () => {
     const navigate = useNavigate();
     const [homeView, setHomeView] = useState('gallery');
+    const [carData, setcarData] = useState([]);
     const [storedUser, setStoredUser] = useState(null);
 
-    useEffect(() => {
+    useEffect(() => { // check for the existing user w/in user storage
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) {
             navigate('/');
@@ -20,6 +21,19 @@ const Home = () => {
             setStoredUser(user);
         }
     }, [navigate]);
+
+    useEffect(() => { // fetch data for main content viewing
+        console.log(homeView);
+        fetchData();
+    }, [homeView]);
+
+    // fetch function
+    const fetchData = async () => { // update parameter 
+        // const fetchURL = `http://localhost:3000/api/${homeView}`;
+        const fetchURL = 'http://localhost:3000/api/allCars';
+        const fetchData = await fetch(fetchURL).then(res => res.json());
+        setcarData(fetchData);
+    }
 
     const handleViewChange = (view) => {
         setHomeView(view);
@@ -30,13 +44,12 @@ const Home = () => {
         navigate('/');
     }
 
-
     return (
         <div className='home-container'>
             <ProfileSideBar storedUser={storedUser} handleViewChange={handleViewChange} homeView={homeView} handleLogout={handleLogout} />
 
             <div className="main-content-container">
-                <MainHomeContent handleViewChange={handleViewChange} homeView={homeView} />
+                <MainHomeContent handleViewChange={handleViewChange} homeView={homeView} carData={carData} />
             </div>
         </div>
     )

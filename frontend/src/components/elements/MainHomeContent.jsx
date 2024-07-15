@@ -1,9 +1,11 @@
+import ListItem from './ListItem';
+
 import cartIcon from '../../assets/shopping-cart-icon.png';
 
+import './elements.css';
+
 const MainHomeContent = (props) => {
-    const handleHistoryTab = () => {
-        // props.handleViewChange('history');
-    }
+    console.log(props.carData);
 
     return (
         <>
@@ -17,8 +19,14 @@ const MainHomeContent = (props) => {
                 </div>
             </div>
             <div className="main-content-products">
-                {props.homeView === 'gallery' && <h1>Gallery</h1>}
-                {props.homeView === 'suggest' && <h1>Suggest</h1>}
+                <div className="main-content-header">
+                    <div className="main-content-title-filter">
+                        {props.homeView === 'gallery' && <h3>Gallery Listing</h3>}
+                        {props.homeView === 'suggest' && <h3>Suggest Listing</h3>}
+                        {props.homeView === 'history' && <h3>History Listing</h3>}
+                    </div>
+                </div>
+                <ListItem carData={props.carData} />
             </div>
         </>
     )
