@@ -1,27 +1,39 @@
 import { useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+import ProfileSideBar from '../elements/ProfileSideBar';
+import MainHomeContent from '../elements/MainHomeContent';
+
+import './pages.css';
 
 const Home = () => {
-    // this page only accessible if user exist in localStorage
-    let storedUser = '';
     const navigate = useNavigate();
+    const [homeView, setHomeView] = useState('gallery');
+    const [storedUser, setStoredUser] = useState(null);
+
     useEffect(() => {
-        storedUser = localStorage.getItem('user');
-        if (!storedUser) { navigate('/'); }
-        else {
-            storedUser = JSON.parse(storedUser);
-            console.log(storedUser);
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            navigate('/');
+        } else {
+            setStoredUser(user);
         }
-    }, [navigate])
+    }, [navigate]);
+
+    const handleViewChange = (view) => {
+        setHomeView(view);
+    }
 
 
     return (
-        <>
-            <h1> Home Page </h1>
-            <Button href="/checkout" variant="primary"> Check Me Out </Button>
-        </>
+        <div className='home-container'>
+            <ProfileSideBar storedUser={storedUser} handleViewChange={handleViewChange} homeView={homeView} />
 
+            <div className="main-content-container">
+                <MainHomeContent homeView={homeView} />
+            </div>
+        </div>
     )
 }
 

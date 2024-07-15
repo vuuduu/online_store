@@ -35,6 +35,7 @@ function Login(props) {
                 setErrorMsg('Failed to Log In');
             }
         } catch (err) {
+            setErrorMsg('Failed to Log In');
             console.error('There was a problem with logging in:', err);
         }
     }

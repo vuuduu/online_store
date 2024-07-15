@@ -3,10 +3,6 @@ import Register from "./Register";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
 import './pages.css'
 
 const Authentication = () => {
