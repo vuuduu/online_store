@@ -2,6 +2,8 @@
 
 ![Screenshot 2024-07-12 at 3 15 45 PM](https://github.com/user-attachments/assets/8bd09972-d3ca-4af6-84fe-67011194dbc6)
 
+![719EC84C-16E7-4E44-8EA2-9E459453122C](https://github.com/user-attachments/assets/916b35a8-c0a2-4ec8-bf4c-2b57202f28ee)
+
 ## Rental Car Data Structure
 - id: car_id 
 - make: Toyota, Honda, Huyndai, Ferrari, Audi, Porche
