@@ -12,6 +12,8 @@ const Home = () => {
     const [homeView, setHomeView] = useState('gallery');
     const [carData, setcarData] = useState([]);
     const [storedUser, setStoredUser] = useState(null);
+    const [selectedCar, setSelectedCar] = useState(null);
+    const [cart, setCart] = useState([]);
 
     useEffect(() => { // check for the existing user w/in user storage
         const user = JSON.parse(localStorage.getItem('user'));
@@ -44,12 +46,41 @@ const Home = () => {
         navigate('/');
     }
 
+    // HANDLE CAR PRODUCT PAGE
+    const handleCarSelect = (car) => {
+        setSelectedCar(car);
+    }
+
+    const handleGoBack = () => {
+        setSelectedCar(null);
+    }
+
+    // CART HANDLING //
+    const handleAddToCart = (car) => {
+        setCart([...cart, car]);
+        console.log(cart);
+    }
+
+    const handleRemoveFromCart = (index) => {
+        const newCart = [...cart];
+        newCart.splice(index, 1);
+        setCart(newCart);
+    }
+
     return (
         <div className='home-container'>
             <ProfileSideBar storedUser={storedUser} handleViewChange={handleViewChange} homeView={homeView} handleLogout={handleLogout} />
-
             <div className="main-content-container">
-                <MainHomeContent handleViewChange={handleViewChange} homeView={homeView} carData={carData} />
+                <MainHomeContent
+                    handleViewChange={handleViewChange}
+                    homeView={homeView}
+                    carData={carData}
+                    cart={cart}
+                    selectedCar={selectedCar}
+                    handleCarSelect={handleCarSelect}
+                    handleGoBack={handleGoBack}
+                    handleAddToCart={handleAddToCart}
+                    handleRemoveFromCart={handleRemoveFromCart} />
             </div>
         </div>
     )

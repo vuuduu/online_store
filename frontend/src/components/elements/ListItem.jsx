@@ -1,15 +1,14 @@
-const ListItem = (props) => {
+const ListItem = ({ carData, handleCarSelect }) => {
     return (
         <>
-
             <div className='car-header'>
                 <div className="car-item">Make</div>
                 <div className="car-item">Body Style</div>
                 <div className="car-item">Year</div>
                 <div className="car-item">Rental Price</div>
             </div>
-            {props.carData.map(car => (
-                <div className='car-group'>
+            {carData.map(car => (
+                <div className='car-group' key={car.id} onClick={() => handleCarSelect(car)}>
                     <div className="car-item">{car.make}</div>
                     <div className="car-item">{car.body_style}</div>
                     <div className="car-item">{car.year}</div>
@@ -17,7 +16,7 @@ const ListItem = (props) => {
                 </div>
             ))}
         </>
-    )
-}
+    );
+};
 
 export default ListItem;
