@@ -30,7 +30,7 @@ const MainHomeContent = ({ homeView, carData, cart, selectedCar, handleViewChang
                             <div className="main-content-header">
                                 <div className="main-content-title-filter">
                                     {homeView === 'gallery' && <h3>Gallery Listing</h3>}
-                                    {homeView === 'suggest' && <h3>Suggest Listing</h3>}
+                                    {homeView === 'suggested' && <h3>Suggest Listing</h3>}
                                     {homeView === 'history' && <h3>History Listing</h3>}
                                 </div>
                             </div>

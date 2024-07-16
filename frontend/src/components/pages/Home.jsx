@@ -43,6 +43,8 @@ const Home = () => {
             fetchURL = `http://localhost:3000/api/${homeView}/${storedUser.user_id}`;
         }
 
+        console.log("FETCH: ", fetchURL);
+
         const fetchData = await fetch(fetchURL).then(res => res.json());
         setcarData(fetchData);
     }

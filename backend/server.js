@@ -187,8 +187,6 @@ app.post('/api/checkout/', async (req, res) => {
 
         const { userId, address, payment, cars } = req.body;
 
-        console.log(userId, address, payment, cars);
-
         const operations = cars.map(car => ({
             updateOne: {
                 filter: { user_id: Number(userId) },
