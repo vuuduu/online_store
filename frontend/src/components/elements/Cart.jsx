@@ -1,12 +1,104 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+
+import { useState } from 'react';
 
 import './elements.css';
 
-const Cart = ({ cartItems, handleRemoveFromCart }) => {
+const CHECKOUT_URL = 'http://localhost:3000/api/checkout';
+
+const Cart = ({ cartItems, handleCartsChange, handleRemoveFromCart }) => {
+    const [shippingInfo, setShippingInfo] = useState({
+        address: '',
+        city: '',
+        postCode: '',
+        country: ''
+    });
+
+    const [paymentInfo, setPaymentInfo] = useState({
+        cardNumber: '',
+        cardType: '',
+        cvv: '',
+        expDate: ''
+    });
+
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [successMsg, setSuccessMsg] = useState(null);
+
+    // UPDATE THE SHIPPING AND PAYMENT STATES
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        if (name.startsWith('shipping')) {
+            setShippingInfo(prevShippingInfo => ({
+                ...prevShippingInfo,
+                [name.split('-')[1]]: value
+            }));
+        } else if (name.startsWith('payment')) {
+            setPaymentInfo(prevPaymentInfo => ({
+                ...prevPaymentInfo,
+                [name.split('-')[1]]: value
+            }));
+        }
+    }
+
     const handleCheckout = (e) => {
         e.preventDefault();
-        console.log(e);
+        const { address, city, postalCode, country } = shippingInfo;
+        const { cardNumber, cardType, cvv, expDate } = paymentInfo;
+
+        // Check if all fields are filled.
+        if (!address || !city || !postalCode || !country || !cardNumber || !cardType || !cvv || !expDate) {
+            setErrorMsg('ALL FIELDS NEED ARE REQUIRED');
+            setSuccessMsg(null);
+            return;
+        }
+
+        // check for cart items
+        if (cartItems.length === 0) {
+            setErrorMsg('YOUR CART IS EMPTY!');
+            setSuccessMsg(null);
+            return;
+        }
+
+        checkoutCarts();
+    }
+
+    const checkoutCarts = async () => {
+        const user = await JSON.parse(localStorage.getItem('user'));
+
+        const checkoutData = {
+            "userId": user.user_id,
+            "address": shippingInfo.address,
+            "payment": paymentInfo.cardType,
+            "cars": cartItems.map((car) => car.id)
+        };
+
+        try {
+            // send a post request to the server
+            const response = await fetch(CHECKOUT_URL, {
+                method: "POST",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify(checkoutData)
+            });
+            // check if the data is ok
+            if (response.status === 201) {
+                setErrorMsg(null);
+                setSuccessMsg(`Successfully Checkout ${cartItems.length} rental cars`);
+
+                // remove cars from cartItems
+                handleCartsChange([]);
+            } else {
+                setErrorMsg('Failed to Log In');
+                setSuccessMsg(null);
+            }
+
+
+        } catch (err) {
+            setErrorMsg('Failed to Checkout');
+            setSuccessMsg(null);
+            console.error('There was a problem with Checkout:', err);
+        }
     }
 
     return (
@@ -19,19 +111,43 @@ const Cart = ({ cartItems, handleRemoveFromCart }) => {
                         <div className="shipping-address">
                             <Form.Group controlId="addressInput">
                                 <Form.Label>Address</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your address" />
+                                <Form.Control
+                                    type="text"
+                                    name="shipping-address"
+                                    value={shippingInfo.address}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your address"
+                                />
                             </Form.Group>
                             <Form.Group controlId="cityInput">
                                 <Form.Label>City</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your city" />
+                                <Form.Control
+                                    type="text"
+                                    name="shipping-city"
+                                    value={shippingInfo.city}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your city"
+                                />
                             </Form.Group>
-                            <Form.Group controlId="pcInput">
+                            <Form.Group controlId="postalCodeInput">
                                 <Form.Label>Postal Code</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your postal code" />
+                                <Form.Control
+                                    type="text"
+                                    name="shipping-postalCode"
+                                    value={shippingInfo.postalCode}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your postal code"
+                                />
                             </Form.Group>
                             <Form.Group controlId="countryInput">
                                 <Form.Label>Country</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your country" />
+                                <Form.Control
+                                    type="text"
+                                    name="shipping-country"
+                                    value={shippingInfo.country}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your country"
+                                />
                             </Form.Group>
                         </div>
                     </div>
@@ -41,25 +157,52 @@ const Cart = ({ cartItems, handleRemoveFromCart }) => {
                         <div className="payment-details">
                             <Form.Group controlId="cardNumberInput">
                                 <Form.Label>Card Number</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your number" />
+                                <Form.Control
+                                    type="text"
+                                    name="payment-cardNumber"
+                                    value={paymentInfo.cardNumber}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your card number"
+                                />
                             </Form.Group>
-                            <Form.Group controlId="cityInput">
+                            <Form.Group controlId="cardTypeInput">
                                 <Form.Label>Card Type</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your card type" />
+                                <Form.Control
+                                    type="text"
+                                    name="payment-cardType"
+                                    value={paymentInfo.cardType}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your card type"
+                                />
                             </Form.Group>
-                            <Form.Group controlId="pcInput">
+                            <Form.Group controlId="cvvInput">
                                 <Form.Label>CVV</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your card cvv" />
+                                <Form.Control
+                                    type="text"
+                                    name="payment-cvv"
+                                    value={paymentInfo.cvv}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your CVV"
+                                />
                             </Form.Group>
-                            <Form.Group controlId="countryInput">
-                                <Form.Label>Expiration Data</Form.Label>
-                                <Form.Control type="text" placeholder="Enter your card exp date" />
+                            <Form.Group controlId="expDateInput">
+                                <Form.Label>Expiration Date</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="payment-expDate"
+                                    value={paymentInfo.expDate}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your card expiration date"
+                                />
                             </Form.Group>
                         </div>
                     </div>
 
                     <Button variant="dark" type='submit'>Checkout</Button>
                 </Form>
+
+                {errorMsg && <Alert variant='danger'>{errorMsg}</Alert>}
+                {successMsg && <Alert variant='success'>{successMsg}</Alert>}
             </div>
 
             <div className="cart-details-right">
@@ -68,9 +211,9 @@ const Cart = ({ cartItems, handleRemoveFromCart }) => {
                     <p>Your cart is empty.</p>
                 ) : (
                     <ul>
-                        {cartItems.map((item, index) => (
+                        {cartItems.map((car, index) => (
                             <li key={index}>
-                                {item.make} {item.model} - ${item.rental_price}
+                                {car.make} {car.body_style} - ${car.rental_price}
                                 <button onClick={() => handleRemoveFromCart(index)}>Remove</button>
                             </li>
                         ))}

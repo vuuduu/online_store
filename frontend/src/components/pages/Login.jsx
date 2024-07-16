@@ -13,7 +13,7 @@ function Login(props) {
     const handleLogin = async (e) => {
         e.preventDefault();
         const username = e.target.formLoginUsername.value;
-        const password = e.target.formLoginPassword.value
+        const password = e.target.formLoginPassword.value;
 
         try {
             // send a post request to the server
