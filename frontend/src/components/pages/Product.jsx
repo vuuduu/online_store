@@ -17,8 +17,10 @@ const Product = ({ car, handleGoBack, handleAddToCart }) => {
             <p><strong>Engine:</strong> {car.engine}</p>
             <p><strong>Color:</strong> {car.color}</p>
             <p><strong>Curb Weight:</strong> {car.curb_weight} lbs</p>
-            <button onClick={handleGoBack}>Go Back</button>
-            <button onClick={addToCart}>Add to Cart</button>
+            <div className="button-products">
+                <div className="btn-products" onClick={handleGoBack}>Go Back</div>
+                <div className="btn-products" onClick={addToCart}>Add to Cart</div>
+            </div>
         </div>
     );
 };
