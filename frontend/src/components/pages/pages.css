@@ -48,3 +48,40 @@ body {
     background-color: #393E46;
     color: white;
 }
+
+/* PRODUCT CSS */
+.product-details {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: center;
+}
+
+.auth-container button {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.button-products {
+    width: 60%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn-products {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.btn-products:hover {
+    background-color: #393E46;
+    color: white;
+}

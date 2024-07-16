@@ -48,7 +48,7 @@ app.get('/api/suggested/:userid', async (req, res) => {
 
         // get user data
         const users = db.collection(userCollections);
-        const userData = await users.findOne({"user_id": Number(userid)});
+        const userData = await users.findOne({ "user_id": Number(userid) });
         const userCarHistory = userData.history.cars;
 
         const flaskUrl = 'http://localhost:5000/predict'
@@ -162,12 +162,12 @@ app.get('/api/history/:userid', async (req, res) => {
 
         // get user data
         const users = db.collection(userCollections);
-        const userData = await users.findOne({"user_id": Number(userid)});
+        const userData = await users.findOne({ "user_id": Number(userid) });
 
         const cars = db.collection(carsCollections);
 
-        const carHistoryList = await cars.find({id: {$in: userData.history.cars}}).toArray();
-        
+        const carHistoryList = await cars.find({ id: { $in: userData.history.cars } }).toArray();
+
         res.json(carHistoryList)
     } catch (err) {
         console.error("Error:", err);
@@ -184,7 +184,7 @@ app.post('/api/checkout/', async (req, res) => {
 
         // get user data
         const users = db.collection(userCollections);
-        
+
         const { userId, address, payment, cars } = req.body;
 
         const operations = cars.map(car => ({
